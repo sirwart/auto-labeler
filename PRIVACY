@@ -1,0 +1,1 @@
+auto-labler is a command line tool that runs on your computer. All the data auto-labeler that it accesses never leaves the computer that it is run on. auto-labeler reads the contents of emails in order to train a model as well as automatically label incoming messages, the the contents of the emails are never stored.
