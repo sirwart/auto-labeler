@@ -52,6 +52,8 @@ def main():
             label_and_archive_emails()
         elif args.command == 'unlink':
             unlink()
+        else:
+            parser.print_help()
     except ValidationError as e:
         print(f'auto-labeler: error: {e}', file=sys.stderr)
         sys.exit(1)
