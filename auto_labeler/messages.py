@@ -23,11 +23,15 @@ def get_textual_parts(part):
 def get_message_contents(message):
     plain_text_contents = ''
     html_contents = ''
+
     subject = ''
+    sender = ''
 
     for header in message['payload']['headers']:
         if header['name'] == 'Subject':
             subject = header['value']
+        elif header['name'] == 'From':
+            sender = header['value']
 
     textual_parts = get_textual_parts(message['payload'])
     for part in textual_parts:
@@ -41,10 +45,10 @@ def get_message_contents(message):
             html_contents = contents
 
     if plain_text_contents:
-        return subject + '\n' + plain_text_contents
+        return subject + '\n' + sender + '\n' + plain_text_contents
     elif html_contents:
         soup = BeautifulSoup(html_contents, 'html.parser')
         html_text_contents = soup.get_text(separator='\n', strip=True)
-        return subject + '\n' + html_text_contents
+        return subject + '\n' + sender + '\n' + html_text_contents
     else:
         return ''
