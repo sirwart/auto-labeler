@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "auto-labeler"
-version = "0.1.0"
+version = "0.1.1"
 description = "A simple tool for automatically labeling and archiving emails based on your past activity"
 authors = ["Brian Smith <ohohvi@gmail.com>"]
 readme = "README.md"
