@@ -84,7 +84,7 @@ def get_training_messages(service, label_names):
         message_limit = -1
         label_ids_list = [label_id]
         if label_id is None:
-            message_limit = len(seen_message_ids) #20 * len(seen_message_ids)
+            message_limit = 2 * len(seen_message_ids)
             label_ids_list = None
 
         message_count = 0
