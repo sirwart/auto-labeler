@@ -4,8 +4,9 @@ import sys
 
 from .archive import print_auto_archive_settings, update_auto_archive
 from .database import get_db_path
+from .data_dir import get_data_dir
 from .errors import ValidationError
-from .unlink import unlink
+from .link import link, unlink
 
 def validate_trained(command_name):
     if not os.path.exists(get_db_path()):
@@ -24,7 +25,9 @@ def main():
 
     subparsers.add_parser('label')
 
+    subparsers.add_parser('link')
     subparsers.add_parser('unlink')
+    subparsers.add_parser('data-dir')
 
     args = parser.parse_args()
 
@@ -50,8 +53,12 @@ def main():
             from .classify import label_and_archive_emails
 
             label_and_archive_emails()
+        elif args.command == 'link':
+            link()
         elif args.command == 'unlink':
             unlink()
+        elif args.command == 'data-dir':
+            print(get_data_dir())
         else:
             parser.print_help()
     except ValidationError as e:

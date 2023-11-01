@@ -104,3 +104,23 @@ trained models, run the `unlink` command.
 ```
 auto-labeler unlink
 ```
+
+## Running on a remote computer
+
+Because `auto-labeler` is a local application, you can only connect it to Gmail from your local
+computer. In order to run `auto-labeler` on a remote host, you need to do the following:
+
+1. Install `auto-labeler` on both your local computer and the host you want to run training
+and/or labeling on.
+
+2. Run `auto-labeler link` on your local computer. This will go through the OAuth process and
+link your Gmail account to `auto-labeler`.
+
+3. Copy the `auto-labeler` data dir to the host you want to train and run `auto-labeler` on. You
+can get the location of the data dir by running `auto-labeler data-dir`.
+
+4. On the remote host, put the data you copied from your into `auto-labeler`'s data dir. You can
+get this value on the remote host by running `auto-labeler data-dir` like you did on your local
+computer.
+
+Once you've done that, you can now run `auto-labeler` remotely.
