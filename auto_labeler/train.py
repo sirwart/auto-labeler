@@ -6,12 +6,12 @@ from .archive import set_active_labels
 from .data_dir import get_data_dir
 from .database import get_conn
 from .gmail import get_service, get_training_messages
-from .watermark import watermark_for_message, set_watermark
+from .watermark import watermark_for_thread, set_watermark
 
 def train_command(labels):
     service = get_service()
 
-    training_messages, latest_message = get_training_messages(service, labels)
+    training_messages, latest_thread, largest_thread_id = get_training_messages(service, labels)
 
     classifier = personal_trainer.MultiLabelTextClassifier()
     classifier.train(training_messages)
@@ -21,4 +21,4 @@ def train_command(labels):
 
     with get_conn() as conn:
         set_active_labels(conn, labels)
-        set_watermark(conn, watermark_for_message(latest_message))
+        set_watermark(conn, watermark_for_thread(latest_thread, largest_thread_id))

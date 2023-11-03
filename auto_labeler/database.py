@@ -5,8 +5,8 @@ from .data_dir import get_data_dir
 
 migrations = [
     'CREATE TABLE auto_archive_settings (label_name TEXT NOT NULL, delay INTEGER NOT NULL)',
-    'CREATE TABLE pending_archives (message_id TEXT NOT NULL, archive_at TIMESTAMP NOT NULL)',
-    'CREATE TABLE watermarks (id INTEGER PRIMARY KEY, message_id TEXT NOT NULL, internal_date INT NOT NULL)',
+    'CREATE TABLE pending_archives (thread_id TEXT NOT NULL, archive_at TIMESTAMP NOT NULL)',
+    'CREATE TABLE watermarks (id INTEGER PRIMARY KEY, thread_id TEXT NOT NULL, history_id TEXT NOT NULL, internal_date INT NOT NULL, largest_thread_id INT NOT NULL)',
 ]
 
 def get_db_path():

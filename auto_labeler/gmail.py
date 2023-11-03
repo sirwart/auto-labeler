@@ -76,48 +76,61 @@ def get_training_messages(service, label_names):
     # After that we try to find a large sample of messages that don't contain
     # the target label.
     messages = []
-    seen_message_ids = set()
+    seen_thread_ids = set()
+    latest_thread = None
     latest_message = None
+    largest_thread_id = None
     page_token = ''
     for label_id in label_ids:
         print('fetching emails for label_id', label_id)
         message_limit = -1
         label_ids_list = [label_id]
         if label_id is None:
-            message_limit = 2 * len(seen_message_ids)
+            message_limit = 2 * len(seen_thread_ids)
             label_ids_list = None
 
         message_count = 0
         while True:
             print(f'fetching page (message_count={message_count}, message_limit={message_limit})')
-            messages_resp = service.users().messages().list(userId='me', labelIds=label_ids_list, pageToken=page_token).execute()
-            page_token = messages_resp.get('nextPageToken', '')
+            threads_resp = service.users().threads().list(userId='me', labelIds=label_ids_list, pageToken=page_token).execute()
+            page_token = threads_resp.get('nextPageToken', '')
 
-            for message_info in messages_resp['messages']:
-                message_id = message_info['id']
-                if message_id in seen_message_ids:
+            for thread_info in threads_resp['threads']:
+                thread_id = thread_info['id']
+                if thread_id in seen_thread_ids:
                     continue
                 try:
-                    message = service.users().messages().get(userId='me', id=message_id).execute()
+                    thread = service.users().threads().get(userId='me', id=thread_id).execute()
                 except Exception as e:
                     print('received exception:', e)
                     continue
 
-                if latest_message is None:
-                    latest_message = message
-                elif message['internalDate'] > latest_message['internalDate']:
-                    latest_message = message
+                first_message = thread['messages'][0]
+                last_message = thread['messages'][-1]
 
-                contents = get_message_contents(message)
+                if latest_message is None:
+                    latest_message = last_message
+                    latest_thread = thread
+                elif last_message['internalDate'] > latest_message['internalDate']:
+                    latest_message = last_message
+                    latest_thread = thread
+
+                thread_id_int = int(thread_id, 16)
+                if largest_thread_id == None:
+                    largest_thread_id = thread_id_int
+                elif thread_id_int > largest_thread_id:
+                    largest_thread_id = thread_id_int
+
+                contents = get_message_contents(first_message)
                 labels = []
-                for message_label_id in message['labelIds']:
+                for message_label_id in first_message['labelIds']:
                     label_name = label_mapping.name_for_id(message_label_id)
                     if label_name in label_names:
                         labels.append(label_name)
 
                 messages.append((contents, labels))
 
-                seen_message_ids.add(message_id)
+                seen_thread_ids.add(thread_id)
                 message_count += 1
                 if message_limit > -1 and message_count >= message_limit:
                     page_token = ''
@@ -126,4 +139,4 @@ def get_training_messages(service, label_names):
             if not page_token:
                 break
 
-    return messages, latest_message
+    return messages, latest_thread, largest_thread_id

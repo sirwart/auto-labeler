@@ -66,7 +66,7 @@ def get_auto_archive_settings(conn):
 
     return settings
 
-def archive_or_queue(service, conn, auto_archive_settings, message_id, labels):
+def archive_or_queue(service, conn, auto_archive_settings, thread_id, labels):
     delay = -1
     for label in labels:
         label_delay = auto_archive_settings[label]
@@ -74,30 +74,30 @@ def archive_or_queue(service, conn, auto_archive_settings, message_id, labels):
             delay = label_delay
     
     if delay == 0:
-        archive_email(service, message_id)
+        archive_thread(service, thread_id)
     elif delay > 0:
-        queue_archive(conn, message_id, delay)
+        queue_archive(conn, thread_id, delay)
 
-def queue_archive(conn, message_id, delay):
+def queue_archive(conn, thread_id, delay):
     cur = conn.cursor()
     delay_expr = f"DATETIME('now', '+{delay} hours')"
-    cur.execute(f'INSERT INTO pending_archives (message_id, archive_at) VALUES (?, {delay_expr})', [message_id])
+    cur.execute(f'INSERT INTO pending_archives (thread_id, archive_at) VALUES (?, {delay_expr})', [thread_id])
     conn.commit()
 
 def archive_emails(service, conn):
     cur = conn.cursor()
-    to_archive = cur.execute('SELECT message_id FROM pending_archives WHERE archive_at <= CURRENT_TIMESTAMP').fetchall()
-    for (message_id,) in to_archive:
-        archive_email(service, message_id)
-        cur.execute('DELETE FROM pending_archives WHERE message_id = ?', [message_id])
+    to_archive = cur.execute('SELECT thread_id FROM pending_archives WHERE archive_at <= CURRENT_TIMESTAMP').fetchall()
+    for (thread_id,) in to_archive:
+        archive_thread(service, thread_id)
+        cur.execute('DELETE FROM pending_archives WHERE thread_id = ?', [thread_id])
         conn.commit()
 
-def archive_email(service, message_id):
+def archive_thread(service, thread_id):
     try:
-        service.users().messages().modify(userId='me', id=message_id, body={"removeLabelIds": ['INBOX']}).execute()
-        print(f'removed message {message_id} from inbox')
+        service.users().threads().modify(userId='me', id=thread_id, body={"removeLabelIds": ['INBOX']}).execute()
+        print(f'removed thread {thread_id} from inbox')
     except googleapiclient.errors.HttpError as e:
         if e.status_code == 404:
-            print(f'tried to remove {message_id} from inbox but no longer found')
+            print(f'tried to remove {thread_id} from inbox but no longer found')
         else:
             raise e
