@@ -1,6 +1,15 @@
-auto-labeler is a command line tool that runs on your computer. All the data auto-labeler that it
-accesses never leaves the computer that it is run on. auto-labeler reads the contents of emails in
-order to train a model as well as automatically label incoming messages. The contents of the
-emails are never stored.
+auto-labeler is a command line tool that runs on your computer and automatically labels data
+based on how you've labeled emails in the past. In order to do this, it needs access to the
+following Gmail permissions:
 
-auto-labeler's use and transfer to any other app of information received from Google APIs will adhere to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes), including the Limited Use requirements.
+- The permission to read labels in your Gmail account in order to lookup label metadata
+
+- The permission to read and modify emails in your Gmail account in order to train a
+  model, classify incoming emails, and automatically add or remove labels to your
+  emails
+
+The data auto-labeler accesses from Gmail is never stored or shared with any other app.
+
+auto-labeler's use of data received from Google APIs adheres to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes),
+including the Limited Use requirements.
+
