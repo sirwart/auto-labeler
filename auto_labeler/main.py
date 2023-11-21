@@ -58,7 +58,7 @@ def main():
         elif args.command == 'unlink':
             unlink()
         elif args.command == 'data-dir':
-            print(get_data_dir())
+            print(f'{get_data_dir()}')
         else:
             parser.print_help()
     except ValidationError as e:

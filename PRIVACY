@@ -8,7 +8,9 @@ following Gmail permissions:
   model, classify incoming emails, and automatically add or remove labels to your
   emails
 
-The data auto-labeler accesses from Gmail is never stored or shared with any other app.
+The data auto-labeler accesses from Gmail is never stored, shared with any other app or
+third party service, or transmitted from the computer you run auto-labeler from.
+All training and usage of the AI model occurs locally by auto-labeler itself.
 
 auto-labeler's use of data received from Google APIs adheres to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes),
 including the Limited Use requirements.
