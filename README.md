@@ -49,7 +49,7 @@ Running `auto-labeler train` will prompt you to link with your Gmail account if 
 it already. Once you've successfully linked your account it will fetch relevant emails and train a
 model with the contents of those emails.
 
-The resulting model will be stored in the default data directory for the current user on your platform.
+The trained model will be stored in the default data directory for the current user on your platform.
 You can change where this is stored by setting the `AUTO_LABELER_DATA_DIR` environment variable.
 
 ## Configuring auto-archiving
