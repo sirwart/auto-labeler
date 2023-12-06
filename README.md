@@ -42,11 +42,12 @@ auto-labeler train <label 1> <label 2>
 The auto-archive duration is how long after emails are auto-labeled they should be archived from
 your inbox in hours. Set it to `0` to archive emails as soon as they are labeled, or `-1` to never
 archive them automatically. Otherwise it should be a positive number that represents hours to wait
-until archiving. Delaying archiving can be 
+until archiving. Delaying archiving can be useful for both checking the accuracy of the labeling
+as well as giving you a chance to read the email if it's important.
 
-This will prompt you to link with your Gmail account if you haven't linked it already. Once you've
-successfully linked your account it will fetch relevant emails and train a model with the contents
-of those emails.
+Running `auto-labeler train` will prompt you to link with your Gmail account if you haven't linked
+it already. Once you've successfully linked your account it will fetch relevant emails and train a
+model with the contents of those emails.
 
 The resulting model will be stored in the default data directory for the current user on your platform.
 You can change where this is stored by setting the `AUTO_LABELER_DATA_DIR` environment variable.
