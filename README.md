@@ -1,8 +1,9 @@
 # auto-labeler
 
-`auto-labeler` is a tool for automatically labeling and archiving emails based on how you've
-labeled emails in the past. This is useful for emails which are not strictly spam but also
-don't require you to look at them. For example:
+`auto-labeler` is a tool to automatically organize your email using AI that runs on your
+computer. It does this by labeling emails based on how you've labeled emails in the past,
+and optionally archiving them after a configurable delay. This is useful for emails
+which are not strictly spam but also don't require you to look at them. For example:
 
 - tagging and auto-archiving terms of service updates with "terms"
 - tagging recruiting emails with "recruiting" and archiving them after a day
